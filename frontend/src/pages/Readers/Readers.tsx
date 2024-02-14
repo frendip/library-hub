@@ -7,17 +7,23 @@ import classes from '../pages.module.scss';
 import {CommonButton} from '../../components/UI/Button/Button';
 import Popup from '../../components/Popup/Popup';
 import {IReader} from '../../types/IReader';
-import {createReader} from '../../store/slices/readersSlice';
+import {createReader, setMaxCountBooks} from '../../store/slices/readersSlice';
 import ReadersForm from '../../components/UI/Form/ReadersForm';
+import MaxCountBooksForm from '../../components/UI/Form/MaxCountBooksForm';
 
 const Readers = () => {
     const dispatch = useAppDispatch();
     const [popupActive, setPopupActive] = useState(false);
 
-    const {status, errorMessage} = useAppSelector((state) => state.readers);
+    const {maxCountBooks, status, errorMessage} = useAppSelector((state) => state.readers);
 
     const addReaderHandler: SubmitHandler<IReader> = (newReader) => {
         dispatch(createReader(newReader));
+    };
+
+    const setMaxCountBooksHandler: SubmitHandler<{maxCountBooks: number}> = (data) => {
+        alert('Количество книг, которые читатель может взять одновременно обновлено');
+        dispatch(setMaxCountBooks(+data.maxCountBooks));
     };
 
     if (status === 'error') {
@@ -37,9 +43,12 @@ const Readers = () => {
     return (
         <div className={classes.pages}>
             <div className={classes.pages__title}>Читатели</div>
-            <CommonButton className={classes.pages__addBtn} size="medium" onClick={() => setPopupActive(true)}>
-                Добавить нового читателя
-            </CommonButton>
+            <div className={classes.pages__section}>
+                <CommonButton size="medium" onClick={() => setPopupActive(true)}>
+                    Добавить нового читателя
+                </CommonButton>
+                <MaxCountBooksForm onSubmitHandler={setMaxCountBooksHandler} maxCountBooks={maxCountBooks} />
+            </div>
             <Popup popupActive={popupActive} setPopupActive={setPopupActive}>
                 <ReadersForm setPopupActive={setPopupActive} onSubmitHandler={addReaderHandler} />
             </Popup>

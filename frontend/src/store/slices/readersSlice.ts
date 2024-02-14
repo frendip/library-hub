@@ -1,4 +1,4 @@
-import {UnknownAction, createAsyncThunk, createSlice} from '@reduxjs/toolkit';
+import {PayloadAction, UnknownAction, createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {IReader} from '../../types/IReader';
 import ReaderService from '../../API/ReadersService';
 import {fetchBooks} from './booksSlice';
@@ -67,12 +67,14 @@ enum Status {
 }
 
 interface readersState {
+    maxCountBooks: number;
     readers: IReader[];
     errorMessage: string;
     status: Status;
 }
 
 const initialState: readersState = {
+    maxCountBooks: 4,
     readers: [],
     errorMessage: '',
     status: Status.LOADING
@@ -81,7 +83,11 @@ const initialState: readersState = {
 const readersSlice = createSlice({
     name: 'readers',
     initialState,
-    reducers: {},
+    reducers: {
+        setMaxCountBooks(state, action: PayloadAction<number>) {
+            state.maxCountBooks = action.payload;
+        }
+    },
     extraReducers: (builder) => {
         builder
             .addCase(fetchReaders.fulfilled, (state, action) => {
@@ -130,5 +136,7 @@ const readersSlice = createSlice({
 const isError = (action: UnknownAction) => {
     return action.type.endsWith('rejected');
 };
+
+export const {setMaxCountBooks} = readersSlice.actions;
 
 export default readersSlice.reducer;

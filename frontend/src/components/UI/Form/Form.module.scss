@@ -71,31 +71,6 @@
     &__submit {
         padding-top: 20px;
     }
-
-    &__button {
-        border: none;
-        font: inherit;
-        cursor: pointer;
-        outline: inherit;
-
-        padding: 10px 15px;
-        border-radius: 15px;
-
-        color: var(--text-color);
-        font-size: 16px;
-        font-weight: 600;
-
-        background-color: rgba(58, 213, 207, 0.8);
-
-        transition: background-color var(--transition-duration);
-
-        &:hover {
-            background-color: rgba(58, 213, 207, 0.9);
-        }
-        &:active {
-            background-color: rgba(58, 213, 207, 1);
-        }
-    }
 }
 
 .checkboxes {
@@ -116,5 +91,42 @@
     &__title {
         font-size: 16px;
         color: var(--text-color);
+    }
+}
+
+.formInline {
+    display: flex;
+    flex-direction: column;
+    gap: 10px 0;
+
+    &__title {
+        color: #000;
+        max-width: 340px;
+        font-size: 16px;
+    }
+
+    &__input {
+        margin-bottom: 5px;
+        width: 15%;
+
+        caret-color: auto;
+
+        padding: 7px;
+        border-radius: 10px;
+        border: 1px solid #000;
+
+        font-size: 18px;
+    }
+
+    &__section {
+        display: flex;
+        gap: 0 15px;
+    }
+
+    &__error {
+        max-width: 340px;
+
+        color: red;
+        font-size: 16px;
     }
 }

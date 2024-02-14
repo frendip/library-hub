@@ -1,4 +1,4 @@
-import React, {FC, Dispatch, SetStateAction, useEffect} from 'react';
+import React, {FC, Dispatch, SetStateAction, useEffect, useState} from 'react';
 import {SubmitHandler, useForm} from 'react-hook-form';
 import classes from './Form.module.scss';
 import {IReader, IReaderCheckboxBooks} from '../../../types/IReader';
@@ -24,13 +24,21 @@ const ReadersForm: FC<ReadersFormProps> = ({setPopupActive, onSubmitHandler, rea
         register,
         formState: {errors},
         handleSubmit,
-        setValue
+        setValue,
+        watch
     } = useForm<IReaderCheckboxBooks>({
         mode: 'onChange',
         defaultValues
     });
 
+    const checkedBooks = watch('books');
     const {books} = useAppSelector((state) => state.books);
+    const {maxCountBooks} = useAppSelector((state) => state.readers);
+    const [availableBooks] = useState(
+        books.filter(
+            (book) => book.quantity > 0 || reader?.books.some((readerBook) => readerBook.book_id === book.book_id)
+        )
+    );
 
     useEffect(() => {
         if (reader) {
@@ -40,6 +48,23 @@ const ReadersForm: FC<ReadersFormProps> = ({setPopupActive, onSubmitHandler, rea
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    const validateCheckedBooks = () => {
+        const count = checkedBooks.reduce((count, checkboxBook) => {
+            if (checkboxBook) {
+                return count + 1;
+            } else {
+                return count;
+            }
+        }, 0);
+
+        if (count > maxCountBooks) {
+            console.log(errors);
+            return `Читатель не может взять столько книг одновременно. Лимит: ${maxCountBooks} книг`;
+        }
+
+        return true;
+    };
 
     const onSubmit = (data: IReaderCheckboxBooks) => {
         const checkedBooks = books.filter((book) => data.books[book.book_id]);
@@ -72,9 +97,12 @@ const ReadersForm: FC<ReadersFormProps> = ({setPopupActive, onSubmitHandler, rea
                     <div className={classes.form__sectionTitle}>Книги</div>
                     <div className={clsx(classes.form__checkboxes, classes.checkboxes)}>
                         <div className={classes.checkboxes__container}>
-                            {books.map((book) => (
+                            {availableBooks.map((book) => (
                                 <label key={book.book_id} className={classes.checkboxes__item}>
-                                    <input type="checkbox" {...register(`books.${book.book_id}`)} />
+                                    <input
+                                        type="checkbox"
+                                        {...register(`books.${book.book_id}`, {validate: validateCheckedBooks})}
+                                    />
                                     <div
                                         className={classes.checkboxes__title}
                                     >{`${book.title} - ${book.author_name}`}</div>
@@ -82,6 +110,11 @@ const ReadersForm: FC<ReadersFormProps> = ({setPopupActive, onSubmitHandler, rea
                             ))}
                         </div>
                     </div>
+                    {errors?.books && (
+                        <div className={classes.form__error}>
+                            {errors.books[`${availableBooks[0].book_id}`]?.message}
+                        </div>
+                    )}
                 </div>
                 <div className={classes.form__submit}>
                     <CommonButton variant="secondary">{reader ? 'Изменить' : 'Добавить'}</CommonButton>
