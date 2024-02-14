@@ -12,7 +12,7 @@ export default class BooksConnection {
 
                 return result.rows;
             } else {
-                const query = `SELECT * FROM books WHERE books_id=${id}`;
+                const query = `SELECT * FROM books WHERE book_id=${id}`;
                 const result = await client.query(query);
 
                 return result.rows[0];
@@ -32,7 +32,7 @@ export default class BooksConnection {
 
             const query = `
             INSERT INTO books (author_name, title, quantity)
-            VALUES('${book.author_name}', '${book.title}', '${book.title}')
+            VALUES('${book.author_name}', '${book.title}', '${book.quantity}')
             RETURNING book_id`;
 
             const result = await client.query(query);
@@ -79,7 +79,7 @@ export default class BooksConnection {
         try {
             await client.query('BEGIN');
 
-            const query = id === undefined ? 'DELETE FROM books' : `DELETE FROM books WHERE books_id=${id}`;
+            const query = id === undefined ? 'DELETE FROM books' : `DELETE FROM books WHERE book_id=${id}`;
             const deleteCount = (await client.query(query)).rowCount;
 
             await client.query('COMMIT');
