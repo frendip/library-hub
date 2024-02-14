@@ -50,16 +50,17 @@ const ReadersForm: FC<ReadersFormProps> = ({setPopupActive, onSubmitHandler, rea
     }, []);
 
     const validateCheckedBooks = () => {
-        const count = checkedBooks.reduce((count, checkboxBook) => {
-            if (checkboxBook) {
-                return count + 1;
-            } else {
-                return count;
-            }
-        }, 0);
+        const count = checkedBooks
+            ? checkedBooks.reduce((count, checkboxBook) => {
+                  if (checkboxBook) {
+                      return count + 1;
+                  } else {
+                      return count;
+                  }
+              }, 0)
+            : 0;
 
         if (count > maxCountBooks) {
-            console.log(errors);
             return `Читатель не может взять столько книг одновременно. Лимит: ${maxCountBooks} книг`;
         }
 
