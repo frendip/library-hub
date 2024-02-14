@@ -51,7 +51,6 @@ export default class ReadersConnection {
 
             await client.query('COMMIT');
 
-            console.log(reader.books);
             if (reader.books) {
                 for (const book of reader.books) {
                     this.insertReaderBook(reader_id, book.book_id);
