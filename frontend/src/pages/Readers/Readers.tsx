@@ -10,6 +10,7 @@ import {IReader} from '../../types/IReader';
 import {createReader, setMaxCountBooks} from '../../store/slices/readersSlice';
 import ReadersForm from '../../components/UI/Form/ReadersForm';
 import MaxCountBooksForm from '../../components/UI/Form/MaxCountBooksForm';
+import Loading from '../../components/Loading/Loading';
 
 const Readers = () => {
     const dispatch = useAppDispatch();
@@ -52,7 +53,7 @@ const Readers = () => {
             <Popup popupActive={popupActive} setPopupActive={setPopupActive}>
                 <ReadersForm setPopupActive={setPopupActive} onSubmitHandler={addReaderHandler} />
             </Popup>
-            {status === 'loading' ? <div>Loading</div> : <ReadersList />}
+            {status === 'loading' ? <Loading /> : <ReadersList />}
         </div>
     );
 };

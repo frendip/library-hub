@@ -9,6 +9,7 @@ import {IBook} from '../../types/IBook';
 import {createBook} from '../../store/slices/booksSlice';
 import BooksList from '../../components/BooksList/BooksList';
 import BooksForm from '../../components/UI/Form/BooksForm';
+import Loading from '../../components/Loading/Loading';
 
 const Books = () => {
     const dispatch = useAppDispatch();
@@ -43,7 +44,7 @@ const Books = () => {
             <Popup popupActive={popupActive} setPopupActive={setPopupActive}>
                 <BooksForm setPopupActive={setPopupActive} onSubmitHandler={addBookHandler} />
             </Popup>
-            {status === 'loading' ? <div>Loading</div> : <BooksList />}
+            {status === 'loading' ? <Loading /> : <BooksList />}
         </div>
     );
 };
