@@ -131,7 +131,7 @@ export default class ReadersConnection {
         const client = await dbPool.connect();
 
         try {
-            const query = `SELECT books.book_id, books.title
+            const query = `SELECT books.book_id, books.title, books.author_name
                 FROM readers
                 JOIN issued_books ON readers.reader_id = issued_books.reader_id
                 JOIN books ON issued_books.book_id = books.book_id
