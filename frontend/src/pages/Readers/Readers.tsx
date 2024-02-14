@@ -8,6 +8,7 @@ import {CommonButton} from '../../components/UI/Button/Button';
 import Popup from '../../components/Popup/Popup';
 import {IReader} from '../../types/IReader';
 import {createReader} from '../../store/slices/readersSlice';
+import ReadersForm from '../../components/UI/Form/ReadersForm';
 
 const Readers = () => {
     const dispatch = useAppDispatch();
@@ -40,8 +41,7 @@ const Readers = () => {
                 Добавить нового читателя
             </CommonButton>
             <Popup popupActive={popupActive} setPopupActive={setPopupActive}>
-                {/* <SpecialistsForm setPopupActive={setPopupActive} onSubmitHandler={addReaderHandler} /> */}
-                <div>123</div>
+                <ReadersForm setPopupActive={setPopupActive} onSubmitHandler={addReaderHandler} />
             </Popup>
             {status === 'loading' ? <div>Loading</div> : <ReadersList />}
         </div>

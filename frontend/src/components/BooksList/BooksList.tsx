@@ -24,7 +24,7 @@ const BooksTitle = () => {
         <>
             <div className={classes.booksList__title}>Название</div>
             <div className={classes.booksList__title}>Автор</div>
-            <div className={classes.booksList__title}>Количество</div>
+            <div className={classes.booksList__title}>Оставшееся количество</div>
             <div></div>
         </>
     );

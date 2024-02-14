@@ -1,6 +1,7 @@
 import {UnknownAction, createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {IBook} from '../../types/IBook';
 import BooksService from '../../API/BooksService';
+import {fetchReaders} from './readersSlice';
 
 export const fetchBooks = createAsyncThunk<IBook[]>('books/fetchBooks', async (_, {rejectWithValue}) => {
     try {
@@ -12,34 +13,52 @@ export const fetchBooks = createAsyncThunk<IBook[]>('books/fetchBooks', async (_
     }
 });
 
-export const createBook = createAsyncThunk<IBook, IBook>('books/createBook', async (newBook, {rejectWithValue}) => {
-    try {
-        const response = await BooksService.createBook(newBook);
-        const data = response.book as IBook;
-        return data;
-    } catch (error: any) {
-        return rejectWithValue(error.message);
-    }
-});
+export const createBook = createAsyncThunk<IBook, IBook>(
+    'books/createBook',
+    async (newBook, {rejectWithValue, dispatch}) => {
+        try {
+            const response = await BooksService.createBook(newBook);
+            const data = response.book as IBook;
 
-export const updateBook = createAsyncThunk<IBook, IBook>('books/updateBook', async (updatedBook, {rejectWithValue}) => {
-    try {
-        const response = await BooksService.updateBook(updatedBook);
-        const data = response.book as IBook;
-        return data;
-    } catch (error: any) {
-        return rejectWithValue(error.message);
-    }
-});
+            dispatch(fetchReaders());
 
-export const deleteBook = createAsyncThunk<number, number>('books/deleteBook', async (book_id, {rejectWithValue}) => {
-    try {
-        await BooksService.deleteBook(book_id);
-        return book_id;
-    } catch (error: any) {
-        return rejectWithValue(error.message);
+            return data;
+        } catch (error: any) {
+            return rejectWithValue(error.message);
+        }
     }
-});
+);
+
+export const updateBook = createAsyncThunk<IBook, IBook>(
+    'books/updateBook',
+    async (updatedBook, {rejectWithValue, dispatch}) => {
+        try {
+            const response = await BooksService.updateBook(updatedBook);
+            const data = response.book as IBook;
+
+            dispatch(fetchReaders());
+
+            return data;
+        } catch (error: any) {
+            return rejectWithValue(error.message);
+        }
+    }
+);
+
+export const deleteBook = createAsyncThunk<number, number>(
+    'books/deleteBook',
+    async (book_id, {rejectWithValue, dispatch}) => {
+        try {
+            await BooksService.deleteBook(book_id);
+
+            dispatch(fetchReaders());
+
+            return book_id;
+        } catch (error: any) {
+            return rejectWithValue(error.message);
+        }
+    }
+);
 
 enum Status {
     LOADING = 'loading',

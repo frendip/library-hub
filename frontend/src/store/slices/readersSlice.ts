@@ -1,6 +1,7 @@
 import {UnknownAction, createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {IReader} from '../../types/IReader';
 import ReaderService from '../../API/ReadersService';
+import {fetchBooks} from './booksSlice';
 
 export const fetchReaders = createAsyncThunk<IReader[]>('readers/fetchReaders', async (_, {rejectWithValue}) => {
     try {
@@ -14,10 +15,13 @@ export const fetchReaders = createAsyncThunk<IReader[]>('readers/fetchReaders', 
 
 export const createReader = createAsyncThunk<IReader, IReader>(
     'readers/createReader',
-    async (newReader, {rejectWithValue}) => {
+    async (newReader, {rejectWithValue, dispatch}) => {
         try {
             const response = await ReaderService.createReader(newReader);
             const data = response.reader as IReader;
+
+            dispatch(fetchBooks());
+
             return data;
         } catch (error: any) {
             return rejectWithValue(error.message);
@@ -27,10 +31,13 @@ export const createReader = createAsyncThunk<IReader, IReader>(
 
 export const updateReader = createAsyncThunk<IReader, IReader>(
     'readers/updateReader',
-    async (updatedReader, {rejectWithValue}) => {
+    async (updatedReader, {rejectWithValue, dispatch}) => {
         try {
             const response = await ReaderService.updateReader(updatedReader);
             const data = response.reader as IReader;
+
+            dispatch(fetchBooks());
+
             return data;
         } catch (error: any) {
             return rejectWithValue(error.message);
@@ -40,9 +47,12 @@ export const updateReader = createAsyncThunk<IReader, IReader>(
 
 export const deleteReader = createAsyncThunk<number, number>(
     'readers/deleteReader',
-    async (reader_id, {rejectWithValue}) => {
+    async (reader_id, {rejectWithValue, dispatch}) => {
         try {
             await ReaderService.deleteReader(reader_id);
+
+            dispatch(fetchBooks());
+
             return reader_id;
         } catch (error: any) {
             return rejectWithValue(error.message);

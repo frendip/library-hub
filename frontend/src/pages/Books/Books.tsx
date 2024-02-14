@@ -8,6 +8,7 @@ import Popup from '../../components/Popup/Popup';
 import {IBook} from '../../types/IBook';
 import {createBook} from '../../store/slices/booksSlice';
 import BooksList from '../../components/BooksList/BooksList';
+import BooksForm from '../../components/UI/Form/BooksForm';
 
 const Books = () => {
     const dispatch = useAppDispatch();
@@ -40,8 +41,7 @@ const Books = () => {
                 Добавить новую книгу
             </CommonButton>
             <Popup popupActive={popupActive} setPopupActive={setPopupActive}>
-                {/* <SpecialistsForm setPopupActive={setPopupActive} onSubmitHandler={addReaderHandler} /> */}
-                <div>123</div>
+                <BooksForm setPopupActive={setPopupActive} onSubmitHandler={addBookHandler} />
             </Popup>
             {status === 'loading' ? <div>Loading</div> : <BooksList />}
         </div>

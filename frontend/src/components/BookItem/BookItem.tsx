@@ -8,6 +8,7 @@ import editIcon from '../../assets/img/editIcon.svg';
 import {SubmitHandler} from 'react-hook-form';
 import {deleteBook, updateBook} from '../../store/slices/booksSlice';
 import {IBook} from '../../types/IBook';
+import BooksForm from '../UI/Form/BooksForm';
 
 interface BookItemProps {
     book: IBook;
@@ -41,8 +42,7 @@ const BookItem: FC<BookItemProps> = ({book}) => {
                 </div>
             </div>
             <Popup popupActive={popupActive} setPopupActive={setPopupActive}>
-                {/* <SkillForm setPopupActive={setPopupActive} onSubmitHandler={updateBookHandler} skill={skill} /> */}
-                <div></div>
+                <BooksForm setPopupActive={setPopupActive} onSubmitHandler={updateBookHandler} book={book} />
             </Popup>
         </>
     );

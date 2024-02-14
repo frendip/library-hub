@@ -8,6 +8,7 @@ import {useAppDispatch} from '../../hooks/useAppDispatch';
 import {deleteReader, updateReader} from '../../store/slices/readersSlice';
 import deleteIcon from '../../assets/img/deleteIcon.svg';
 import editIcon from '../../assets/img/editIcon.svg';
+import ReadersForm from '../UI/Form/ReadersForm';
 
 interface ReaderItemProps {
     reader: IReader;
@@ -47,12 +48,7 @@ const ReaderItem: FC<ReaderItemProps> = ({reader}) => {
                 </div>
             </div>
             <Popup popupActive={popupActive} setPopupActive={setPopupActive}>
-                {/* <SpecialistsForm
-                    setPopupActive={setPopupActive}
-                    onSubmitHandler={updateReaderHandler}
-                    specialist={specialist}
-                /> */}
-                <div>123</div>
+                <ReadersForm setPopupActive={setPopupActive} onSubmitHandler={updateReaderHandler} reader={reader} />
             </Popup>
         </>
     );
